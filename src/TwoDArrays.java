@@ -5,6 +5,7 @@ public class TwoDArrays {
     public static void main(String[] args) {
        // int [][]arr = new int[4][4];
         int [][]wavePrintArr = {{11,12,13,14},{21,22,23,24},{31,32,33,34},{41,42,43,44}};
+        System.out.println(findPrimes(10,20));
 
        // displayArr(userInput(arr));
         wavePrint(wavePrintArr);
@@ -14,7 +15,7 @@ public class TwoDArrays {
         ArrayList<Integer> arrList = new ArrayList<>();
 
         //To add an element :
-        arrList.add(10);
+        //arrList.add(10);
         //To check the size;
         arrList.size();
 
@@ -60,6 +61,29 @@ public class TwoDArrays {
             s+=str.charAt(i);
         }
         return s;
+    }
+    public static ArrayList<Integer> findPrimes(int start, int end) {
+
+        ArrayList<Integer> primes = new ArrayList<Integer>();
+
+        for(int n = start; n < end; n++) {
+            boolean prime = true;
+
+            int i = 2;
+            while(i <= n/2) {
+                if(n % i == 0) {
+                    prime = false;
+                    break;
+                }
+                i++;
+            }
+
+            if(prime) {
+                primes.add(n);
+            }
+        }
+
+        return primes;
     }
 
 }
