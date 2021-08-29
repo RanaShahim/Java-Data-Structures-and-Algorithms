@@ -2,7 +2,7 @@ public class LinearAndBinarySearch {
     public static void main(String[] args) {
         int []arr = {20,54,55,66,77,89,90,101,116,119,220,229,271,281,290};
         System.out.println(linearSearch(arr, 23));
-        System.out.println(binarySearch(arr, 220));
+        System.out.println(binarySearch(arr, 9210));
     }
     public static int linearSearch(int []arr, int target){
         for(int i = 0;i<arr.length;i++) {
