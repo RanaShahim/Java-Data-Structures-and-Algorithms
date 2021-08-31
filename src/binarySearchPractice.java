@@ -1,9 +1,10 @@
 public class binarySearchPractice {
     public static void main(String[] args) {
-        int []arr = {8,15,23,66,752,81};
+        int []arr = {8,15,23,66,752,21};
         int []arr1 = {-17,-15,-6,-3,-1,0,5,7,9,11,14};
-        int []arr2 = {2,3,5,9,14,16,18,24,26,29};
+        int []arr2 = {2,3,5,9,14,16,13,10,8,3};
         int []arr3 = {5,7,7,7,8,7,10};
+        int []arr4 = {1,2,3,2,1};
         displayArray(firstAndLastPosition(arr3, 7));
         char []ch = {'c', 'f', 'j'};
 
@@ -12,10 +13,11 @@ public class binarySearchPractice {
         displayArray(firstAndLastPosition(arr3, 7));
        // System.out.println(binarySearch(arr, 23));
        // displayArray(squaredSortedArray(arr1));
+        System.out.println(" ");
+        //System.out.println(infiniteSortedArray(arr2, 5));
+        System.out.println(peakOfTheMountain(arr4));
     }
-    public static int binarySearch(int []arr, int target){
-        int start = 0;
-        int end = arr.length-1;
+    public static int binarySearch(int []arr, int target, int start, int end){
 
         while(start<=end){
             int mid = (start+end)/2;
@@ -149,14 +151,103 @@ public class binarySearchPractice {
 
     Sol : 1- Try to move in chunks since we don't know the length of the array
           2- Check chunk by chunk in your array until you find the answer
-
+          3- Start with a box and size two and keep increasing it exponentionally.
+          4- Apply simple binary search
 
      */
 
-//    public static int infiniteSortedArray(int []arr){
-//
-//        int start = 0
-//    }
+    public static int infiniteSortedArray(int []arr, int target, int start, int end){
+
+
+        int result = 0;
+        while(start<=end){
+
+            int mid = (start + end) / 2;
+            if (target > arr[mid]) {
+                start = mid + 1;
+            } else if (target < arr[mid]) {
+                end = mid - 1;
+            } else{
+                result = mid;
+                break;
+            }
+        }
+        return result;
+    }
+    static int findingRangeForInfiniteArr(int []arr, int target){
+        int start = 0;
+        int end = 1;
+        while(target>arr[end]){
+            int newStart = end+1;
+            end += (end-start+1)*2;
+            start = newStart;
+        }
+        return infiniteSortedArray(arr,target,start,end);
+    }
+
+    /*
+
+    Q : Peak Index In a mountain array:
+
+    1- A mountain array is one which first increases and then decreases.
+    2- The most optimised approach is being implemented here
+
+     */
+
+    public static int peakOfTheMountain(int []arr){
+        int start = 0;
+        int end = arr.length-1;
+
+        while(start<end){
+            int mid = (start+end)/2;
+            if(arr[mid]<arr[mid+1]){
+                //This condition states that the array is in decreasing order, since the element at mid index < mid+1
+                //This may be the answer but look at the left thats why end != mid-1
+                end = mid;
+            }else{
+                //This conditon states that array is in increasing order
+                start = mid+1; // We know mid+1 element is greater than
+            }
+        }
+        return start; //or end since they're equal and we will
+    }
+
+    /*
+
+    1- Find the peak element
+    2- Search in the first half and if now found, search in the second half.
+
+     */
+    public static int smallestIndexInMountainArray(int []arr){
+
+        //This code will find the peak.
+        int start = 0;
+        int end = arr.length-1;
+
+        while(start<end){
+            int mid = (start+end)/2;
+
+            if(arr[mid]<arr[mid+1]){
+                end = mid;
+            }else{
+                start = mid+1;
+            }
+        }
+        return start;
+    }
+
+    public static int solToAboveQuestion(int []arr, int target){
+        boolean isFound = false;
+        int peak = smallestIndexInMountainArray(arr);
+        //Instead of applying simple binary search here, order agnostic binary search should've been implemented.
+        int element = binarySearch(arr,target,0,peak);
+        if(element != -1){
+            return element;
+        }else{
+            return binarySearch(arr,target,peak+1,arr.length-1);
+        }
+    }
+
 
     public static void displayArray(int []arr){
         for(int val:arr){
