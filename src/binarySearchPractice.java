@@ -2,7 +2,7 @@ public class binarySearchPractice {
     public static void main(String[] args) {
         int []arr = {8,15,23,66,752,21};
         int []arr1 = {-17,-15,-6,-3,-1,0,5,7,9,11,14};
-        int []arr2 = {2,3,5,9,14,16,13,10,8,3};
+        int []arr2 = {2,3,5,9,14,16,23,13,10,0,3};
         int []arr3 = {5,7,7,7,8,7,10};
         int []arr4 = {1,2,3,2,1};
         displayArray(firstAndLastPosition(arr3, 7));
@@ -16,6 +16,8 @@ public class binarySearchPractice {
         System.out.println(" ");
         //System.out.println(infiniteSortedArray(arr2, 5));
         System.out.println(peakOfTheMountain(arr4));
+        System.out.println(" ");
+        System.out.println(findMax(arr2));
     }
     public static int binarySearch(int []arr, int target, int start, int end){
 
@@ -203,10 +205,11 @@ public class binarySearchPractice {
             if(arr[mid]<arr[mid+1]){
                 //This condition states that the array is in decreasing order, since the element at mid index < mid+1
                 //This may be the answer but look at the left thats why end != mid-1
-                end = mid;
+                start = mid+1;;
             }else{
                 //This conditon states that array is in increasing order
-                start = mid+1; // We know mid+1 element is greater than
+                 // We know mid+1 element is greater than
+                end = mid;
             }
         }
         return start; //or end since they're equal and we will
@@ -247,7 +250,41 @@ public class binarySearchPractice {
             return binarySearch(arr,target,peak+1,arr.length-1);
         }
     }
+    /*
 
+    Question : Search in a rotated array:
+
+        1- Find the pivot in the array.
+        2- The property of a pivot is that it has a sorted array on its left and tight side. e.g : [2,6,8,10,3,4,6]=> 10 is the pivot
+        3- Pivot is the maximum number in the array around which the array is distributed.
+        4- Once pivot is found, check the left side of the array and if element is not found, check the right side.
+
+        Finding the pivot with binary search
+
+        1- Incase our mid value is lesser than the start value, it means that we dont have to look into the right side of the pivot
+        2- Otherwise if start is lesser than pivot, we have to look into the left side of the pivot.
+
+     */
+        public static int searchInRotatedArray(int []arr, int target){
+            int max = findMax(arr);
+            int element = binarySearch(arr,target,0,max);
+            if(element != -1){
+                return element;
+            }else{
+                return binarySearch(arr, target,max+1,arr.length-1);
+            }
+        }
+
+
+    public static int findMax(int []arr){
+        int max = 0;
+        for(int i = 0;i<arr.length-1;i++){
+            if(arr[i]>arr[max]){
+                max = i;
+            }
+        }
+        return max ;
+    }
 
     public static void displayArray(int []arr){
         for(int val:arr){
