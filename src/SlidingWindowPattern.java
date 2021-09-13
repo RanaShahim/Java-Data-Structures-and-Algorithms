@@ -1,9 +1,23 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class SlidingWindowPattern {
     public static void main(String[] args) {
             int []arr = {2,-4,1,6,-3,-6,8,-5,2,5,0,-3,2,6};
            // System.out.println(firstNegInSubArr(arr, 3));
+           String str1 = "aabaabaa";
+           String str2 = "aabae";
+
+           int [] charArr = new int[26];
+           for(char c : str2.toCharArray()){
+               charArr[c-'a']++;
+           }
+           displayArr(charArr);
+    }
+    public static void displayArr(int[]arr){
+        for(int a:arr){
+            System.out.println(a);
+        }
     }
     /*
     1- SubArray must be continuous
@@ -74,6 +88,52 @@ public class SlidingWindowPattern {
            j++;
         }
         return list;
+    }
+
+    /*
+
+    1- Use an array to get the frequency of smaller string!
+    2- increment j to the size of the window which will be the length of the array
+    3- decrement the count variable which is also the length of the second string. If that length = 0, means that we have found our anagram.
+
+     */
+    public static ArrayList<Integer> isAnnagram(String str1, String str2){
+        ArrayList<Integer> result = new ArrayList<>();
+        int []freqCount = new int[26];
+        int windowSize = str2.length();
+        for(char c:str2.toCharArray()){
+            freqCount[c-'a']++;
+        }
+        int i = 0;
+        int j = 0;
+        int count = str2.length();
+
+        while(j<str1.length()){
+            //Here we check whether str1's character is = to str2 or not.
+            if(freqCount[str1.charAt(j)-'a']>1){
+                count--;
+            }
+            //Once we have checked our specific character from the charList, we will decrement it and move the j forwards
+            freqCount[str1.charAt(j)-'a']--;
+            j++;
+            if(count==0) result.add(i); //Here we add the first character of our anagram which is still at i when the count is at 0.
+
+            //This is the now sliding case of the window. Once our count is 0, we've to increment back the characters in our freqArray that were decremented in the first phase.
+            //
+
+
+            if(j==windowSize){
+                if(freqCount[str1.charAt(i)-'a']>1){
+                    count++;
+                }
+                freqCount[str1.charAt(i)-'a']++;
+                i++;
+            }
+
+        }
+
+        return result;
+
     }
 
 }
